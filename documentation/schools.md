@@ -49,3 +49,18 @@ Response:
 }
 ```
 *Returned URL is intended to be the `src` attribute of an HTML image tag.
+
+#### Available Food
+Returns a list of available food a school's students can claim.
+```
+Method: GET
+Route: /schools/available_food/
+Request Body: None
+Response: String if no food is available or an array of:
+{
+    name: "Food item name",
+    quantity: "Number of items left",
+    calories: "Number of calories per item",
+    expiration: "UNIX time"
+}
+```

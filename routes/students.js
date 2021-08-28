@@ -18,13 +18,13 @@ router.get("/get_school", isAStudent, async (req, res) => {
     }});
 });
 
-router.get("/available_food", isASchool, (req, res) => {
+router.get("/available_food", isAStudent, (req, res) => {
     Food.find({ school: req.user.relation })
         .then(foodArray => {
             if (foodArray.length == 0) return res.json({ food: "You have no food to provide." });
             let formattedFood = [];
             foodArray.forEach(food => {
-                formattedFood.push({ name: food.name, quantity: food.quantity, calories: food.calories, expiration: food.expiration });
+                formattedFood.push({ name: food.name, quantity: food.quantityLeft, calories: food.calories, expiration: food.expiration });
             });
             return res.json({
                 students: JSON.stringify(providers)

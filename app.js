@@ -37,5 +37,6 @@ app.use(passport.session());
 app.use("/users", require("./routes/users"));
 app.use("/schools", require("./routes/schools"));
 app.use("/providers", require("./routes/providers"));
+app.use("/students", require("./routes/students"));
 
 app.listen(3000, () => console.log("Server is online on http://localhost:3000"));

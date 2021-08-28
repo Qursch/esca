@@ -1,6 +1,15 @@
 # esca
 A project for WaffleHacks '21.
 
+Esca is a service that helps connect schools with local grocery stores and restaurants (providers) who are willing to donate left over food to students facing food insecurity.
+
+This API includes many key functions to Esca, such as:
+- Providing schools with a list of local providers, and vice versa
+- Allowing schools to create accounts for students so they can claim avaliable food
+- Allowing providers to add food for students facing food insecurity to claim
+- Allowing students to claim a certain daily amount of good from local providers
+
+The Esca API also utilizes computational intelligence via the [Wolfram|Alpha API](https://www.wolframalpha.com/), in order to connect schools and providers, as well as allow every student an equal amount of food.
 
 ## Installation
 
