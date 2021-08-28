@@ -27,9 +27,10 @@ SESSION_SECRET=...
 ## API Documentation
 
 Documentation for:
-[General Users](documentation/users.md)
-[Schools](documentation/schools.md)
-[Providers][documentation/providers.md]
+
+[General Users](documentation/users.md)<br />
+[Schools](documentation/schools.md)<br />
+[Providers](documentation/providers.md)
 
 ## License
 [Apache-2.0](https://choosealicense.com/licenses/apache-2.0/)
