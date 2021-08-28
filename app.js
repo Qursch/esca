@@ -42,6 +42,9 @@ app.get("/login", (req, res) => {
 app.get("/student", (req, res) => {
     res.sendFile(path.join(__dirname, "/views/student.html"));
 });
+app.get("/provider", (req, res) => {
+    res.sendFile(path.join(__dirname, "/views/provider.html"));
+});
 
 
 app.use("/users", require("./routes/users"));
