@@ -29,5 +29,6 @@ app.use(passport.session());
 
 app.use("/users", require("./routes/users"));
 app.use("/schools", require("./routes/schools"));
+app.use("/providers", require("./routes/providers"));
 
 app.listen(3000, () => console.log("Online!"));

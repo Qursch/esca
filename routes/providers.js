@@ -9,13 +9,16 @@ router.get("/get_school", isAProvider, async (req, res) => {
     res.json({ school: {
         name: school.name,
         email: school.email,
-        location: school.location
+        location: {
+            longitude: school.location.longitude,
+            latitude: school.location.latitude
+        }
     }});
 });
 
 router.post("/set_school", isAProvider, async (req, res) => {
     const { schoolName } = req.body;
-    User.findOne({ name: schoolName })
+    User.findOne({ name: schoolName }).collation({ locale: 'en', strength: 1 })
         .then(school => {
             if (!school) return res.json({ error: "Invalid school." });
 
