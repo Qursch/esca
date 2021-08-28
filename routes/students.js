@@ -5,17 +5,19 @@ const Food = require("../models/Food");
 const { isAStudent, getTotalCalories } = require("../util");
 const { maxFoodPerDay, hardFoodLimit } = require("../config/settings");
 
-router.get("/get_school", isAStudent, async (req, res) => {
+router.get("/get_school", isAStudent, (req, res) => {
     if (req.user.relation.toString().length == 0) return res.json({ school: "You are not in a school." });
-    const school = await User.findById(req.user.relation);
-    res.json({ school: {
-        name: school.name,
-        email: school.email,
-        location: {
-            longitude: school.location.longitude,
-            latitude: school.location.latitude
-        }
-    }});
+    User.findById(req.user.relation)
+        .then(school => {
+            if(school == null) return res.json({ error: "Error finding school." });
+            res.json({
+                school: {
+                    name: school.name,
+                    email: school.email,
+                    location: school.location
+                }
+            });
+        });
 });
 
 router.get("/available_food", isAStudent, (req, res) => {
@@ -27,7 +29,7 @@ router.get("/available_food", isAStudent, (req, res) => {
                 formattedFood.push({ name: food.name, quantity: food.quantityLeft, calories: food.calories, expiration: food.expiration });
             });
             return res.json({
-                students: JSON.stringify(providers)
+                food: JSON.stringify(formattedFood)
             });
         });
 });
@@ -44,7 +46,7 @@ router.post("/claim_food", isAStudent, (req, res) => {
             if(currentDailyAmount >= maxFoodPerDay) return res.json({ error: "Daily maximum amount of food already reached." });
             if(currentDailyAmount + (quantity * foodItem.calories) > hardFoodLimit) return res.json({ error: "Requested quantity goes over your daily limit." });
             
-            foodItem.quantity -= quantity;
+            foodItem.quantityLeft = Number.parseInt(foodItem.quantityLeft) - Number.parseInt(quantity);
             foodItem.save()
                 .then(() => {
                     req.user.itemsProcessed.push({ id: foodItem._id, amount: quantity * foodItem.calories });

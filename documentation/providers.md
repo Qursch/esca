@@ -4,7 +4,7 @@
 Returns a provider's school.
 ```
 Method: GET
-Route: /providers/get_students/
+Route: /providers/get_school/
 Request Body: None
 Response: School as a string if there is none or an object:
 {
@@ -24,7 +24,7 @@ Method: POST
 Route: /providers/set_school/
 Request Body: 
 {
-   schoolName: "Name of school, case insensitive"
+   name: "Name of school, case insensitive"
 }
 Response: Success or error.
 ```

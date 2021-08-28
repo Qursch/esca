@@ -23,7 +23,7 @@ Returns a list of available food a student can claim.
 Method: GET
 Route: /students/available_food/
 Request Body: None
-Response: String if no food is available or an array of:
+Response: Food as a string if no food is available or an array of:
 {
     name: "Food item name",
     quantity: "Number of items left",

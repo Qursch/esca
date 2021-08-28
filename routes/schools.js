@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const Food = require("../models/Food");
 const { isASchool, getZipCode } = require("../util");
 const { wolframAPI } = require("../config/apis");
 

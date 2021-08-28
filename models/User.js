@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const User = mongoose.model("User", new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true,
@@ -42,9 +46,17 @@ const User = mongoose.model("User", new mongoose.Schema({
         required: false
     },
     itemsProcessed: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Food',
-        required: false
+        type: [{
+            id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Food',
+                required: true
+            },
+            amount: {
+                type: Number,
+                required: true
+            }
+        }]
     }
 }));
 

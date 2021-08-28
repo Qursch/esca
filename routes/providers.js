@@ -5,28 +5,28 @@ const Food = require("../models/Food");
 const { isAProvider } = require("../util");
 const { wolframAPI } = require("../config/apis");
 
-router.get("/get_school", isAProvider, async (req, res) => {
+router.get("/get_school", isAProvider, (req, res) => {
     if (req.user.relation.toString().length == 0) return res.json({ school: "You have not set a school." });
-    const school = await User.findById(req.user.relation);
-    res.json({
-        school: {
-            name: school.name,
-            email: school.email,
-            location: {
-                longitude: school.location.longitude,
-                latitude: school.location.latitude
-            }
-        }
-    });
+    User.findById(req.user.relation)
+        .then(school => {
+            if(school == null) return res.json({ error: "Error finding school." });
+            res.json({
+                school: {
+                    name: school.name,
+                    email: school.email,
+                    location: school.location
+                }
+            });
+        });
 });
 
 router.post("/set_school", isAProvider, async (req, res) => {
-    const { schoolName } = req.body;
-    User.findOne({ name: schoolName }).collation({ locale: 'en', strength: 1 })
+    const { name } = req.body;
+    User.findOne({ name, type: "school" }).collation({ locale: 'en', strength: 1 })
         .then(school => {
             if (!school) return res.json({ error: "Invalid school." });
 
-            req.user.relation = schoolID;
+            req.user.relation = school._id;
             req.user.save();
             res.json({ success: "Successfully set school." });
         })
@@ -62,7 +62,7 @@ router.post("/add_food", isAProvider, (req, res) => {
                         const calories = queryresult.pods[1].subpods[0].plaintext.split(" ")[0];
                         const newFood = new Food({
                             name,
-                            quantity,
+                            quantityLeft: quantity,
                             calories,
                             expiration,
                             school: req.user.relation,
@@ -71,7 +71,7 @@ router.post("/add_food", isAProvider, (req, res) => {
                         newFood.save()
                             .then(() => {
                                 res.json({ success: "Successfully added food." });
-                                req.user.itemsProvided.push({ id: newFood._id, amount: quantity * calories });
+                                req.user.itemsProcessed.push({ id: newFood._id, amount: quantity * calories });
                                 req.user.save()
                                     .catch(error => console.error(error));
                                 
@@ -94,7 +94,7 @@ router.post("/add_food", isAProvider, (req, res) => {
                 existingFood.save()
                     .then(() => {
                         res.json({ success: "Successfully added food." });
-                        req.user.itemsProvided.push({ id: existingFood._id, amount: quantity * existingFood.calories });
+                        req.user.itemsProcessed.push({ id: existingFood._id, amount: quantity * existingFood.calories });
                         req.user.save()
                             .catch(error => console.error(error));
                         
