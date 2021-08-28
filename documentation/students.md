@@ -44,3 +44,17 @@ Request Body:
 }
 Response: Success or errors.
 ```
+
+#### Claimed Food
+Returns a list of food claimed by a student.
+```
+Method: GET
+Route: /students/claimed_food/
+Request Body:
+Response: Food as a string if no food as been claimed or array of:
+{
+    name: "Food item name",
+    quantity: "Number of items",
+    calories: "Number per quantity"
+}
+```

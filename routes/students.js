@@ -73,8 +73,9 @@ router.get("/claimed_food", isAStudent, async (req, res) => {
     let claimed = [];
     for(let i = 0; i < req.user.itemsProcessed.length; i++) {
         let item = await Food.findById(req.user.itemsProcessed[i].id)
-        claimed.push({ name: item.name, calories: item.calories, quantity: req.user.itemsProcessed[i].amount/item.calories })
+        claimed.push({ name: item.name, quantity: req.user.itemsProcessed[i].amount/item.calories,  calories: item.calories })
     }
+    if(claimed.length == 0) return res.json({ food: "No food has been claimed." });
     res.json({ food: JSON.stringify(claimed) });
 });
 
