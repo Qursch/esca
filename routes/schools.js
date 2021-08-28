@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
-const { isASchool } = require("../util");
+const { isASchool, getZipCode } = require("../util");
+const { wolframAPI } = require("../config/apis");
 
 router.get("/get_students", isASchool, (req, res) => {
     User.find({ extra: req.user._id })
@@ -38,6 +39,22 @@ router.post("/add_students", isASchool, async (req, res) => {
     res.json({
         info: `Added ${formattedStudents.length - failed.length} student${formattedStudents.length > 1 ? "s" : ""} to your school.`,
         error: JSON.stringify(failed)
+    });
+});
+
+router.get("/nearby/:place_type", isASchool, (req, res) => {
+    if (!["grocery", "restaurants"].includes(req.params.place_type)) {
+        req.params.place_type = Math.random() < 0.5 ? "grocery" : "restaurants";
+    }
+    getZipCode(req.user.location.coordinates[0], req.user.location.coordinates[1], (zipcode) => {
+        wolframAPI.getSimple(`${req.params.place_type} near zipcode ${zipcode}`)
+            .then(result => {
+                res.json({ url: result });
+            })
+            .catch(error => {
+                console.error(error);
+                res.json({ error: "Error when searching."})
+            });
     });
 });
 

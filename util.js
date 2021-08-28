@@ -1,3 +1,5 @@
+const { geocoderAPI } = require("./config/apis");
+
 module.exports = {
     isASchool: (req, res, next) => {
         if (req.isAuthenticated() && req.user.type == "school") {
@@ -11,5 +13,20 @@ module.exports = {
             return next();
         }
         res.json({ error: "Invalid authentication." });
+    },
+
+    isAStudent: (req, res, next) => {
+        if (req.isAuthenticated() && req.user.type == "student") {
+            return next();
+        }
+        res.json({ error: "Invalid authentication." });
+    },
+
+    getZipCode: (latitude, longitude, next) => {
+        geocoderAPI.geocode(latitude + ", " + longitude).then(response => {
+            next(response[0].zipcode);
+        }).catch(error => {
+            console.error(error);
+        })
     }
 }

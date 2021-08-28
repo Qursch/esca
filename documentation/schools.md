@@ -34,3 +34,17 @@ Response:
     ]
 }
 ```
+
+#### Get Nearby Possible Providers
+Returns a image list of nearby grocery stores OR restaurants.
+```
+Method: GET
+Route: /schools/nearby/<place_type>
+Place Type: "grocery" or "restaurants"
+Request Body: None
+Response:
+{
+    url: "gif;base64..."
+}
+```
+*Returned URL is intended to be the `src` attribute of an HTML image tag.

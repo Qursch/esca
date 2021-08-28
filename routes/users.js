@@ -5,13 +5,13 @@ const passport = require("passport");
 const User = require("../models/User");
 
 router.post("/signup", (req, res) => {
-    const { name, email, password, type, location } = req.body;
+    const { name, email, password, type, locLat, locLong } = req.body;
 
     if (name == null || email == null || password == null || type == null || locLong == null || locLat == null) return res.json({ error: "Missing information." });
     if (!email.includes("@")) return res.json({ error: "Invalid email." });
     if (password.length < 6) return res.json({ error: "Password must be at least 6 characters." });
     if (!["student", "school", "provider"].includes(type)) return res.json({ error: "Invalid account type." });
-    if(isNaN(location.longitude) || isNaN(location.latitude)) return res.json({ error: "Invalid location." });
+    if(isNaN(locLat) || isNaN(locLong)) return res.json({ error: "Invalid location." });
 
     User.findOne({ email: email.toLowerCase() })
         .then(foundUser => {
@@ -27,8 +27,8 @@ router.post("/signup", (req, res) => {
                 location: {
                     type: "Point",
                     coordinates: [
-                        location.longitude, 
-                        location.latitude
+                        locLat, 
+                        locLong
                     ]
                 }
             });

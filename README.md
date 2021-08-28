@@ -22,6 +22,7 @@ Next add and set the following `.env` variables.
 ```bash
 MONGO_URI=...
 SESSION_SECRET=...
+WOLFRAM_ID=...
 ```
 
 ## API Documentation
@@ -30,7 +31,8 @@ Documentation for:
 
 [General Users](documentation/users.md)<br />
 [Schools](documentation/schools.md)<br />
-[Providers](documentation/providers.md)
+[Providers](documentation/providers.md)<br />
+[Students](documentation/students.md)<br />
 
 ## License
 [Apache-2.0](https://choosealicense.com/licenses/apache-2.0/)

@@ -28,3 +28,16 @@ Request Body:
 }
 Response: Success or error.
 ```
+
+#### Get Nearby Schools
+Returns a image list of nearby schools.
+```
+Method: GET
+Route: /providers/nearby_schools/
+Request Body: None
+Response:
+{
+    url: "gif;base64..."
+}
+```
+*Returned URL is intended to be the `src` attribute of an HTML image tag.
