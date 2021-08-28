@@ -4,17 +4,32 @@ const User = require("../models/User");
 const { isASchool, getZipCode } = require("../util");
 const { wolframAPI } = require("../config/apis");
 
+router.get("/get_providers", isASchool, (req, res) => {
+    User.find({ relation: req.user._id, type: "provider" })
+        .then(users => {
+            console.log(users)
+            if (users.length == 0) return res.json({ students: "You have no providers." });
+            let providers = [];
+            users.forEach(user => {
+                providers.push({ name: user.name, email: user.email });
+            });
+            return res.json({
+                students: JSON.stringify(providers)
+            });
+        });
+});
+
 router.get("/get_students", isASchool, (req, res) => {
-    User.find({ extra: req.user._id })
+    User.find({ relation: req.user._id, type: "student" })
         .then(users => {
             console.log(users)
             if (users.length == 0) return res.json({ students: "You have no students." });
-            let emails = [];
+            let students = [];
             users.forEach(user => {
-                emails.push({ name: user.name, email: user.email });
+                students.push({ name: user.name, email: user.email });
             });
             return res.json({
-                students: JSON.stringify(emails)
+                students: JSON.stringify(students)
             });
         });
 });
@@ -31,7 +46,7 @@ router.post("/add_students", isASchool, async (req, res) => {
                 if (!studentUser) {
                     failed.push(student);
                 } else {
-                    studentUser.extra = req.user._id;
+                    studentUser.relation = req.user._id;
                     studentUser.save();
                 }
             });

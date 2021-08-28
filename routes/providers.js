@@ -6,8 +6,8 @@ const { isAProvider } = require("../util");
 const { wolframAPI } = require("../config/apis");
 
 router.get("/get_school", isAProvider, async (req, res) => {
-    if (req.user.extra.toString().length == 0) return res.json({ school: "You have not set a school." });
-    const school = await User.findById(req.user.extra);
+    if (req.user.relation.toString().length == 0) return res.json({ school: "You have not set a school." });
+    const school = await User.findById(req.user.relation);
     res.json({
         school: {
             name: school.name,
@@ -26,7 +26,7 @@ router.post("/set_school", isAProvider, async (req, res) => {
         .then(school => {
             if (!school) return res.json({ error: "Invalid school." });
 
-            req.user.extra = schoolID;
+            req.user.relation = schoolID;
             req.user.save();
             res.json({ success: "Successfully set school." });
         })
@@ -51,7 +51,7 @@ router.post("/add_food", isAProvider, (req, res) => {
     const { name, quantity, expiration } = req.body;
     if (name == null || quantity == null || expiration == null) return res.json({ error: "Missing inputs." });
     if ([name, quantity, expiration].includes("")) return res.json({ error: "Empty food information." });
-    Food.findOne({ school: req.user.extra, name: name })
+    Food.findOne({ school: req.user.relation, name: name })
         .then((existingFood) => {
             if (existingFood == null) {
                 wolframAPI.getFull({
@@ -65,7 +65,7 @@ router.post("/add_food", isAProvider, (req, res) => {
                             quantity,
                             calories,
                             expiration,
-                            school: req.user.extra,
+                            school: req.user.relation,
                             providers: [req.user._id]
                         });
                         newFood.save()

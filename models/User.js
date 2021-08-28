@@ -34,12 +34,16 @@ const User = mongoose.model("User", new mongoose.Schema({
             required: false
         }
     },
-    extra: {
+    relation: {
         // Student: SCHOOL_ID
-        // Provider: SCHOOL_ID 
+        // Provider: SCHOOL_ID
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: false
+    },
+    itemsProcessed: {
+        type: Number,
+        default: 0
     }
 }));
 

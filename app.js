@@ -14,8 +14,8 @@ db.on("error", console.error.bind(console, 'Connection error:'));
 db.once("open", () => console.log("Connected to database."));
 
 
-const agenda = new Agenda({ db: { address: db }});
-require("../config/jobs")(agenda);
+const agenda = new Agenda({ db: { address: process.env.MONGO_URI }});
+require("./config/jobs")(agenda);
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
