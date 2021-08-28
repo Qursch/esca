@@ -16,12 +16,13 @@ module.exports = () => {
     );
 
     passport.serializeUser((user, done) => {
-        done(null, user.email);
+        console.log("B:" + user._id)
+        done(null, user._id);
     });
 
-    passport.deserializeUser((email, done) => {
-        User.findOne({ email })
-            .then((error, user) => {
+    passport.deserializeUser((_id, done) => {
+        User.findById({ _id })
+            .then((user, error) => {
                 done(error, user);
             });
     });

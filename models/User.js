@@ -14,6 +14,23 @@ const User = mongoose.model("User", new mongoose.Schema({
         type: String,
         required: true,
         enum: ["student", "school", "provider"]
+    },
+    location: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
+    extra: {
+        // Student: SCHOOL_ID
+        // School: 
+        type: String,
+        required: false
     }
 }))
 
