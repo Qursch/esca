@@ -42,8 +42,9 @@ const User = mongoose.model("User", new mongoose.Schema({
         required: false
     },
     itemsProcessed: {
-        type: Number,
-        default: 0
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Food',
+        required: false
     }
 }));
 

@@ -24,5 +24,16 @@ module.exports = {
 
     getLocation: (latitude, longitude) => {
         return geocoderAPI.geocode(latitude + ", " + longitude);
-    }
+    },
+
+    getTotalCalories: (foodArray) => {
+        let sum = 0;
+        for (let i = 0; i < foodArray.length; i++) {
+            let foodItem = foodArray[i];
+            if ("amount" in foodItem) {
+                sum += foodItem.amount;
+            }
+        }
+        return sum;
+    },
 }

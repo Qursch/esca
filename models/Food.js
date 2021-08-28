@@ -5,7 +5,7 @@ const Food = mongoose.model("Food", new mongoose.Schema({
         type: String,
         required: true
     },
-    quantity: {
+    quantityLeft: {
         type: Number,
         required: true
     },
@@ -28,8 +28,17 @@ const Food = mongoose.model("Food", new mongoose.Schema({
         required: true
     },
     studentsClaimed: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'User',
+        type: [{
+            student: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true
+            }
+        }],
         required: false
     }
 }));

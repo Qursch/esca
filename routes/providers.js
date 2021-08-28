@@ -71,6 +71,10 @@ router.post("/add_food", isAProvider, (req, res) => {
                         newFood.save()
                             .then(() => {
                                 res.json({ success: "Successfully added food." });
+                                req.user.itemsProvided.push({ id: newFood._id, amount: quantity * calories });
+                                req.user.save()
+                                    .catch(error => console.error(error));
+                                
                             })
                             .catch((error) => {
                                 console.error(error);
@@ -90,6 +94,10 @@ router.post("/add_food", isAProvider, (req, res) => {
                 existingFood.save()
                     .then(() => {
                         res.json({ success: "Successfully added food." });
+                        req.user.itemsProvided.push({ id: existingFood._id, amount: quantity * existingFood.calories });
+                        req.user.save()
+                            .catch(error => console.error(error));
+                        
                     })
                     .catch((error) => {
                         console.error(error);

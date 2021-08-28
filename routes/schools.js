@@ -7,7 +7,6 @@ const { wolframAPI } = require("../config/apis");
 router.get("/get_providers", isASchool, (req, res) => {
     User.find({ relation: req.user._id, type: "provider" })
         .then(users => {
-            console.log(users)
             if (users.length == 0) return res.json({ students: "You have no providers." });
             let providers = [];
             users.forEach(user => {
@@ -22,7 +21,6 @@ router.get("/get_providers", isASchool, (req, res) => {
 router.get("/get_students", isASchool, (req, res) => {
     User.find({ relation: req.user._id, type: "student" })
         .then(users => {
-            console.log(users)
             if (users.length == 0) return res.json({ students: "You have no students." });
             let students = [];
             users.forEach(user => {
@@ -71,6 +69,20 @@ router.get("/nearby/:place_type/:distance", isASchool, (req, res) => {
         .catch(error => {
             console.error(error);
             res.json({ error: "Error when searching." })
+        });
+});
+
+router.get("/available_food", isASchool, (req, res) => {
+    Food.find({ school: req.user._id })
+        .then(foodArray => {
+            if (foodArray.length == 0) return res.json({ food: "You have no food to provide." });
+            let formattedFood = [];
+            foodArray.forEach(food => {
+                formattedFood.push({ name: food.name, quantity: food.quantity, calories: food.calories, expiration: food.expiration });
+            });
+            return res.json({
+                students: JSON.stringify(providers)
+            });
         });
 });
 
