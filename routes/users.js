@@ -8,7 +8,7 @@ const { getZipCode, getLocation } = require("../util");
 router.post("/signup", (req, res) => {
     const { name, email, password, type, locLat, locLong } = req.body;
 
-    if (name == null || email == null || password == null || type == null || locLong == null || locLat == null) return res.json({ error: "Missing information." });
+    if ([name, email, password, type, locLong, locLat].includes(null)) return res.json({ error: "Missing information." });
     if (!email.includes("@")) return res.json({ error: "Invalid email." });
     if (password.length < 6) return res.json({ error: "Password must be at least 6 characters." });
     if (!["student", "school", "provider"].includes(type)) return res.json({ error: "Invalid account type." });

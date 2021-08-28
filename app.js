@@ -1,4 +1,5 @@
 require("dotenv").config();
+const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
@@ -33,6 +34,15 @@ app.use(session({
 require("./config/passport")();
 app.use(passport.initialize());
 app.use(passport.session());
+
+// FOR DEMO VIDEO ONLY
+app.get("/login", (req, res) => {
+    res.sendFile(path.join(__dirname, "/views/login.html"));
+});
+app.get("/student", (req, res) => {
+    res.sendFile(path.join(__dirname, "/views/student.html"));
+});
+
 
 app.use("/users", require("./routes/users"));
 app.use("/schools", require("./routes/schools"));

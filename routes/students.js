@@ -37,7 +37,7 @@ router.get("/available_food", isAStudent, (req, res) => {
 router.post("/claim_food", isAStudent, (req, res) => {
     const { name, quantity } = req.body;
     if(name == null || name.length == 0) return res.json({ error: "Invalid food item." });
-    if(isNaN(quantity) || Number.parseInt(quantity) < 0) return res.json({ error: "Invalid quantity." });
+    if(isNaN(quantity) || Number.parseInt(quantity) < 1) return res.json({ error: "Invalid quantity." });
     Food.findOne({ school: req.user.relation, name })
         .then(foodItem => {
             if (foodItem == null) return res.json({ error: "Failed to find food item." });
@@ -67,6 +67,15 @@ router.post("/claim_food", isAStudent, (req, res) => {
                     res.json({ error: "Error updating food quantity left." });
                 })
         });
+});
+
+router.get("/claimed_food", isAStudent, async (req, res) => {
+    let claimed = [];
+    for(let i = 0; i < req.user.itemsProcessed.length; i++) {
+        let item = await Food.findById(req.user.itemsProcessed[i].id)
+        claimed.push({ name: item.name, calories: item.calories, quantity: req.user.itemsProcessed[i].amount/item.calories })
+    }
+    res.json({ food: JSON.stringify(claimed) });
 });
 
 

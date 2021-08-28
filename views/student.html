@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esca - Student Portal</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Food Available</h1>
+    <table id="1">
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Calories</th>
+        </tr>
+    </table>
+    <button id="refresh1">Reload Items</button>
+    <h1>Food Claimed</h1>
+    <table id="2">
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Calories</th>
+        </tr>
+        <h3>Daily Limit: 0/1000</h3>
+    </table>
+    <button id="refresh2">Reload Items</button>
+    <h1>Claim Food</h1>
+    <h4></h4>
+    <form method="POST" action="/students/claim_food">
+        <label>Food Item</label>
+        <input id="name" type="text" placeholder="Name" name="name">
+        <br />
+        <label>Quantity of Item</label>
+        <input id="quantity" type="number" placeholder="0" name="quantity">
+        <br />
+    </form>
+    <button id="submit">Claim</button>
+    <script>
+        function refreshAvailable(event) {
+            $(".item").remove();
+            $.ajax({
+                url: "/students/available_food",
+            }).then(data => {
+                let items = JSON.parse(data.food);
+                for (let i = 0; i < items.length; i++) {
+                    let itemHTML = `<tr class="item">
+                                        <td>${items[i].name}</td>
+                                        <td>${items[i].quantity}</td>
+                                        <td>${items[i].calories}</td>
+                                        
+                                    </tr>
+                        `
+                    $("#1").append(itemHTML);
+                }
+            });
+        }
+
+        $("#refresh1").click(refreshAvailable);
+
+        function refreshClaimed(event) {
+            $(".item2").remove();
+            $.ajax({
+                url: "/students/claimed_food",
+            }).then(data => {
+                let items = JSON.parse(data.food);
+                let sum = 0;
+                for (let i = 0; i < items.length; i++) {
+                    let itemHTML = `<tr class="item2">
+                                        <td>${items[i].name}</td>
+                                        <td>${items[i].quantity}</td>
+                                        <td>${items[i].calories}</td>
+                                    </tr>
+                        `
+                    $("#2").append(itemHTML);
+                    sum += items[i].calories * items[i].quantity;
+                }
+                $("h3").text(`Daily Limit: ${sum}/1000`);
+            });
+        }
+
+        $("#refresh2").click(refreshClaimed);
+
+        $("#submit").click((event) => {
+            $.ajax({
+                url: "/students/claim_food",
+                data: {
+                    name: $("#name").val(),
+                    quantity: $("#quantity").val()
+                },
+                method: "POST"
+            }).then(data => {
+                if (data.error == null) {
+                    $("h4").text("Success: " + data.success);
+                } else {
+                    $("h4").text("Error: " + data.error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
