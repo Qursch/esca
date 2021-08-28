@@ -34,7 +34,6 @@ router.post("/signup", (req, res) => {
             });
             getLocation(locLat, locLong)
                 .then(response => {
-                    console.log(response)
                     newUser.location.zip = response[0].zipcode;
                     newUser.location.county = response[0].county + " " + response[0].state;
                 }).catch(error => {
@@ -68,6 +67,15 @@ router.post("/login", (req, res, next) => {
         });
 
     })(req, res, next);
+});
+
+router.post("/logout", (req, res) => {
+    if(req.user != null) {
+        req.logOut();
+        res.json({ success: "Successfully logged out." });
+    } else {
+        res.json({ error: "You are not logged in." });
+    }
 });
 
 

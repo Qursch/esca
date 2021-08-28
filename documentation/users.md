@@ -1,6 +1,6 @@
 ### User Management
 
-#### Signup
+#### Sign Up
 Creates a user.
 ```
 Method: POST
@@ -16,10 +16,10 @@ Request Body:
         latitude: 100
     ]
 }
-Response: Success or error.
+Response: Success or Error
 ```
 
-#### Login
+#### Log In
 Authenticates a user and creates a session.
 ```
 Method: POST
@@ -31,5 +31,14 @@ Request Body:
     password: "Password"
 
 }
-Response: Success or error.
+Response: Success or Error
+```
+
+#### Log Out
+Exits a user's session.
+```
+Method: POST
+Route: /users/logout/
+Request Body: None
+Response: Success or Error
 ```

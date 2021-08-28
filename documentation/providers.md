@@ -26,7 +26,7 @@ Request Body:
 {
    name: "Name of school, case insensitive"
 }
-Response: Success or error.
+Response: Success or Error
 ```
 
 #### Get Nearby Schools
@@ -54,5 +54,5 @@ Request Body:
     quantity: "Number of items",
     expiration: "UNIX timestamp"
 }
-Response: Success or error.
+Response: Success or Error
 ```
