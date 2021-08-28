@@ -34,7 +34,7 @@ router.post("/add_students", isASchool, async (req, res) => {
                     studentUser.extra = req.user._id;
                     studentUser.save();
                 }
-            })
+            });
     }
     res.json({
         info: `Added ${formattedStudents.length - failed.length} student${formattedStudents.length > 1 ? "s" : ""} to your school.`,

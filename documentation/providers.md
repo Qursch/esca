@@ -42,3 +42,17 @@ Response:
 }
 ```
 *Returned URL is intended to be the `src` attribute of an HTML image tag.
+
+#### Add Food
+Adds food for selected school to provide to students.
+```
+Method: POST
+Route: /providers/add_food
+Request Body:
+{
+    name: "Name of food",
+    quantity: "Number of items",
+    expiration: "UNIX timestamp"
+}
+Response: Success or error.
+```

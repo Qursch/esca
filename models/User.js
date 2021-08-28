@@ -37,9 +37,10 @@ const User = mongoose.model("User", new mongoose.Schema({
     extra: {
         // Student: SCHOOL_ID
         // Provider: SCHOOL_ID 
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: false
     }
-}))
+}));
 
 module.exports = User;
