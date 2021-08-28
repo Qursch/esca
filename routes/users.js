@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const User = require("../models/User");
+const { getZipCode, getLocation } = require("../util");
 
 router.post("/signup", (req, res) => {
     const { name, email, password, type, locLat, locLong } = req.body;
@@ -11,12 +12,11 @@ router.post("/signup", (req, res) => {
     if (!email.includes("@")) return res.json({ error: "Invalid email." });
     if (password.length < 6) return res.json({ error: "Password must be at least 6 characters." });
     if (!["student", "school", "provider"].includes(type)) return res.json({ error: "Invalid account type." });
-    if(isNaN(locLat) || isNaN(locLong)) return res.json({ error: "Invalid location." });
+    if (isNaN(locLat) || isNaN(locLong)) return res.json({ error: "Invalid location." });
 
     User.findOne({ email: email.toLowerCase() })
         .then(foundUser => {
             if (foundUser) return res.json({ error: "Email already in use." });
-
             const salt = bcrypt.genSaltSync(10);
             const hash = bcrypt.hashSync(password, salt);
             const newUser = new User({
@@ -27,17 +27,26 @@ router.post("/signup", (req, res) => {
                 location: {
                     type: "Point",
                     coordinates: [
-                        locLat, 
+                        locLat,
                         locLong
                     ]
                 }
             });
-            newUser.save()
-                .then(() => res.json({ success: "Account created." }))
-                .catch((error) => {
+            getLocation(locLat, locLong)
+                .then(response => {
+                    console.log(response)
+                    newUser.location.zip = response[0].zipcode;
+                    newUser.location.county = response[0].county + " " + response[0].state;
+                }).catch(error => {
                     console.error(error);
-                    res.json({ error: "Error creating account." });
-                });
+                }).finally(() => {
+                    newUser.save()
+                        .then(() => res.json({ success: "Account created." }))
+                        .catch((error) => {
+                            console.error(error);
+                            res.json({ error: "Error creating account." });
+                        });
+                })
         });
 });
 

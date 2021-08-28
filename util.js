@@ -22,11 +22,7 @@ module.exports = {
         res.json({ error: "Invalid authentication." });
     },
 
-    getZipCode: (latitude, longitude, next) => {
-        geocoderAPI.geocode(latitude + ", " + longitude).then(response => {
-            next(response[0].zipcode);
-        }).catch(error => {
-            console.error(error);
-        })
+    getLocation: (latitude, longitude) => {
+        return geocoderAPI.geocode(latitude + ", " + longitude);
     }
 }

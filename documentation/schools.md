@@ -39,8 +39,9 @@ Response:
 Returns a image list of nearby grocery stores OR restaurants.
 ```
 Method: GET
-Route: /schools/nearby/<place_type>
+Route: /schools/nearby/<place_type>/<distance>
 Place Type: "grocery" or "restaurants"
+Distance: Number 1 (near city) or 2 (in county) detailing how far to search
 Request Body: None
 Response:
 {

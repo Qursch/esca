@@ -8,10 +8,10 @@ router.get("/get_students", isASchool, (req, res) => {
     User.find({ extra: req.user._id })
         .then(users => {
             console.log(users)
-            if(users.length == 0) return res.json({ students: "You have no students." });
+            if (users.length == 0) return res.json({ students: "You have no students." });
             let emails = [];
             users.forEach(user => {
-                emails.push({name: user.name, email: user.email});
+                emails.push({ name: user.name, email: user.email });
             });
             return res.json({
                 students: JSON.stringify(emails)
@@ -22,7 +22,7 @@ router.get("/get_students", isASchool, (req, res) => {
 router.post("/add_students", isASchool, async (req, res) => {
     const { students } = req.body;
     const formattedStudents = JSON.parse(students);
-    if(!Array.isArray(formattedStudents) || formattedStudents.length == 0) return res.json({ error: "Invalid student emails." });
+    if (!Array.isArray(formattedStudents) || formattedStudents.length == 0) return res.json({ error: "Invalid student emails." });
     let failed = [];
     for (let i = 0; i < formattedStudents.length; i++) {
         let student = formattedStudents[i];
@@ -42,20 +42,21 @@ router.post("/add_students", isASchool, async (req, res) => {
     });
 });
 
-router.get("/nearby/:place_type", isASchool, (req, res) => {
-    if (!["grocery", "restaurants"].includes(req.params.place_type)) {
-        req.params.place_type = Math.random() < 0.5 ? "grocery" : "restaurants";
-    }
-    getZipCode(req.user.location.coordinates[0], req.user.location.coordinates[1], (zipcode) => {
-        wolframAPI.getSimple(`${req.params.place_type} near zipcode ${zipcode}`)
-            .then(result => {
-                res.json({ url: result });
-            })
-            .catch(error => {
-                console.error(error);
-                res.json({ error: "Error when searching."})
-            });
-    });
+router.get("/nearby/:place_type/:distance", isASchool, (req, res) => {
+    if (!["grocery", "restaurants"].includes(req.params.place_type)) return res.json({ error: "Invalid place type." });
+    if (isNaN(req.params.distance) || ![1, 2].includes(req.params.distance)) return res.json({ error: "Invalid distance." });
+    let input = `${req.params.place_type} ${
+        req.params.distance == 1 ? `near zip ${req.user.location.zip}` :
+        `in ${req.user.location.county}`
+    }`;
+    wolframAPI.getSimple(input)
+        .then(result => {
+            res.json({ url: result });
+        })
+        .catch(error => {
+            console.error(error);
+            res.json({ error: "Error when searching." })
+        });
 });
 
 module.exports = router;

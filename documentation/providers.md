@@ -33,7 +33,8 @@ Response: Success or error.
 Returns a image list of nearby schools.
 ```
 Method: GET
-Route: /providers/nearby_schools/
+Route: /providers/nearby_schools/<distance>
+Distance: Number 1 (in city), 2 (around city), or 3 (in county) detailing how far to search
 Request Body: None
 Response:
 {

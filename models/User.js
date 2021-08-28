@@ -24,11 +24,19 @@ const User = mongoose.model("User", new mongoose.Schema({
         coordinates: {
             type: [Number],
             required: true
+        },
+        zip: {
+            type: String,
+            required: false
+        },
+        county: {
+            type: String,
+            required: false
         }
     },
     extra: {
         // Student: SCHOOL_ID
-        // School: 
+        // Provider: SCHOOL_ID 
         type: String,
         required: false
     }
