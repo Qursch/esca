@@ -1,9 +1,9 @@
-# esca
+# [esca](https://devpost.com/software/esca)
 A project for [WaffleHacks](https://wafflehacks.devpost.com/) '21.
 
 <img src="https://repository-images.githubusercontent.com/400640252/bb44d171-6f0e-4918-b434-9ad22327ce7a">
 
-Esca is a service that helps connect schools with local grocery stores and restaurants (providers) who are willing to donate left over food to students facing food insecurity.
+[Esca](https://devpost.com/software/esca) is a service that helps connect schools with local grocery stores and restaurants (providers) who are willing to donate left over food to students facing food insecurity.
 
 This API includes many key functions to Esca, such as:
 - Providing schools with a list of local providers, and vice versa
