@@ -1,5 +1,6 @@
 # [esca](https://devpost.com/software/esca)
-A project for [WaffleHacks](https://wafflehacks.devpost.com/) '21.
+A project for [WaffleHacks](https://wafflehacks.devpost.com/) '21.<br />
+<b>Winner of Best Hack for Student Food Insecurity</b>
 
 <img src="https://repository-images.githubusercontent.com/400640252/bb44d171-6f0e-4918-b434-9ad22327ce7a">
 
