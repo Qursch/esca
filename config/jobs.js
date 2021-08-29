@@ -3,8 +3,8 @@ const Food = require("../models/Food");
 
 
 module.exports = (agenda) => {
-    agenda.define("remove expired food", async (job) => {
-        await Food.deleteMany({ expiration: { $lt: Date.now() }});
+    agenda.define("refresh food food", async (job) => {
+        await Food.deleteMany({ $or: [ { expiration: { $lt: Date.now() } }, { quantityLeft: 0 } ] });
     });
 
     agenda.define("reset students daily claimed food", async (job) => {
