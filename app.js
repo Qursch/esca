@@ -35,18 +35,6 @@ require("./config/passport")();
 app.use(passport.initialize());
 app.use(passport.session());
 
-// FOR DEMO VIDEO ONLY
-app.get("/login", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/login.html"));
-});
-app.get("/student", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/student.html"));
-});
-app.get("/provider", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/provider.html"));
-});
-
-
 app.use("/users", require("./routes/users"));
 app.use("/schools", require("./routes/schools"));
 app.use("/providers", require("./routes/providers"));
